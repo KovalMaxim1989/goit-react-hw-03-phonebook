@@ -1,7 +1,7 @@
 import ContactItem from 'components/ContactItem';
 import PropTypes from 'prop-types';
 
-const ContactList = ({ contacts, onDeleteContact }) => {
+const ContactList = ({ contacts, onDeleteContact, onEditContact }) => {
   return (
     <ul>
       {contacts.map(({ id, name, number }) => (
@@ -11,6 +11,7 @@ const ContactList = ({ contacts, onDeleteContact }) => {
           number={number}
           id={id}
           onDeleteContact={onDeleteContact}
+          onEditContact={onEditContact}
         />
       ))}
     </ul>
@@ -26,6 +27,7 @@ ContactList.propTypes = {
     })
   ).isRequired,
   onDeleteContact: PropTypes.func.isRequired,
+  onEditContact: PropTypes.func.isRequired,
 };
 
 export default ContactList;

@@ -4,18 +4,27 @@ import { Container } from './App.styled';
 import Phonebook from './Phonebook';
 import ContactList from './ContactList';
 import Filter from './Filter';
-// import Phonebook from './Phonebook/Phonebook';
+
+const LS_KEY = 'contacts';
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem(LS_KEY, JSON.stringify(this.state.contacts));
+    }
+  }
+
+  componentDidMount() {
+    const savedContacts = JSON.parse(localStorage.getItem(LS_KEY));
+    if (savedContacts) {
+      this.setState({ contacts: savedContacts });
+    }
+  }
 
   addContact = (newName, number) => {
     const isNotUnique = this.state.contacts.some(
@@ -40,6 +49,17 @@ class App extends Component {
     }));
   };
 
+  editContact = updateContact => {
+    this.setState(({ contacts }) => ({
+      contacts: contacts.map(contact => {
+        if (contact.id === updateContact.id) {
+          return updateContact;
+        }
+        return contact;
+      }),
+    }));
+  };
+
   changeFilter = evt => {
     this.setState({ filter: evt.currentTarget.value });
   };
@@ -47,11 +67,12 @@ class App extends Component {
   filterList = () => {
     const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLocaleLowerCase();
-    const filteredContacts = contacts.filter(contast =>
+    const visibleContacts = contacts.filter(contast =>
       contast.name.toLocaleLowerCase().includes(normalizedFilter)
     );
-    return filteredContacts;
+    return visibleContacts;
   };
+
   render() {
     const { filter } = this.state;
     return (
@@ -64,9 +85,11 @@ class App extends Component {
         <ContactList
           contacts={this.filterList()}
           onDeleteContact={this.deleteContact}
+          onEditContact={this.editContact}
         />
       </Container>
     );
   }
 }
+
 export default App;

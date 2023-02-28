@@ -26,13 +26,29 @@ export const Button = styled.button`
   transition: all 250ms ease-in-out;
   &:hover,
   &:focus {
-    box-shadow: rgba(22, 100, 226, 0.24) 0px 3px 8px;
+    box-shadow: rgba(142, 0, 0, 0.24) 0px 3px 8px;
     background-color: red;
     border-color: transparent;
     color: #fff;
   }
-  svg {
-    width: 16px;
-    height: 16px;
-  }
+`;
+export const ContactInfo = styled.div`
+  /* min-width: 380px; */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+export const ContactName = styled.p`
+  display: flex;
+  gap: 10px;
+  max-width: 245px;
+  font-size: 14px;
+  font-weight: 600;
+`;
+export const ContactTel = styled.p`
+  display: flex;
+  gap: 10px;
+  max-width: 245px;
+  font-size: 14px;
 `;
